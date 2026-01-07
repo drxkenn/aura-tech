@@ -1,59 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 Aura Tech Solutions - Sistema de Gestión Escolar (SaaS)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este documento detalla los pasos para configurar el entorno de desarrollo local. Sigue las instrucciones al pie de la letra para conectar correctamente con la base de datos en la nube (NeonDB).
 
-## About Laravel
+## 📋 Requisitos Previos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Asegúrate de tener instalado en tu equipo:
+* **PHP** >= 8.2
+* **Composer** (Última versión)
+* **Node.js** & **NPM**
+* **Git**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 💻 Stack Tecnológico y Dependencias Clave
 
-## Learning Laravel
+Este proyecto utiliza las siguientes tecnologías y librerías principales. Es recomendable revisar su documentación:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+* **Framework Backend:** [Laravel 11](https://laravel.com/docs)
+* **Base de Datos:** [PostgreSQL](https://www.postgresql.org/) (Alojada en NeonDB)
+* **Arquitectura SaaS:** [Stancl Tenancy v3](https://tenancyforlaravel.com/docs/v3)
+    * *Nota:* Usamos la estrategia de **Single Database & Multi-Schema** (Esquemas separados por colegio).
+* **Frontend:** Blade + [Tailwind CSS](https://tailwindcss.com/) (Vía Vite)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### ⚠️ Requisitos del Sistema (PHP Extensions)
+Asegúrate de que tu `php.ini` tenga habilitadas estas extensiones para conectar con Neon:
+- `pdo_pgsql`
+- `pgsql`
+- `fileinfo`
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🛠️ Pasos de Instalación
 
-### Premium Partners
+1.  **Clonar el repositorio:**
+    ```bash
+    git clone <URL_DEL_REPO>
+    cd aura-tech
+    ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+2.  **Instalar dependencias de Backend:**
+    ```bash
+    composer install
+    ```
 
-## Contributing
+3.  **Instalar dependencias de Frontend:**
+    ```bash
+    npm install
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4.  **Configurar variables de entorno:**
+    * Duplica el archivo `.env.example` y renómbralo a `.env`.
+    * O ejecuta: `cp .env.example .env` (en terminal Bash).
 
-## Code of Conduct
+5.  **Generar llave de aplicación:**
+    ```bash
+    php artisan key:generate
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🔐 Configuración de Base de Datos (.env)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+⚠️ **IMPORTANTE:** Estamos usando **NeonDB (PostgreSQL)**. Para evitar errores de conexión en Windows, la configuración debe ser exacta.
 
-## License
+Pide las credenciales (`DB_PASSWORD`, etc.) a **Jair** por interno. No las subas al repositorio.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Configura tu archivo `.env` así:
+
+```ini
+APP_NAME="Aura Tech"
+APP_ENV=local
+APP_KEY=base64:.... (Se genera sola)
+APP_DEBUG=true
+APP_URL=http://localhost
+
+# --- CONFIGURACIÓN NEON DB (LANDLORD) ---
+DB_CONNECTION=pgsql
+DB_HOST=ep-fancy-waterfall-ad3127wl-pooler.c-2.us-east-1.aws.neon.tech
+DB_PORT=5432
+DB_DATABASE=neondb
+DB_USERNAME=neondb_owner
+DB_PASSWORD="<PIDE_LA_CONTRASEÑA_A_JAIR>" 
+
+# --- CRÍTICO: FIX PARA WINDOWS/NEON ---
+# Este ID es necesario para que el driver conecte correctamente
+DB_ENDPOINT_ID=ep-fancy-waterfall-ad3127wl
+DB_SSLMODE=require
